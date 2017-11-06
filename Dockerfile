@@ -24,17 +24,14 @@ RUN dnf -y groupinstall 'LXDE Desktop' && \
     && dnf clean all
 
 ADD rpm/*.rpm /tmp/
-RUN yum -y localinstall /tmp/*.rpm
-
-RUN useradd -u datch -r -g 0 -d ${HOME} -s /sbin/nologin -c " User" datch && \
+RUN yum -y localinstall /tmp/*.rpm && \
     chmod g+w /etc/xrdp && \
     chmod u+s /usr/sbin/xrdp-sesman && \
-    chmod u+s /usr/sbin/xrdp && \
-    mkdir -p /home/datch && \
-    chown -R datch:0 ${HOME} 
+    chmod u+s /usr/sbin/xrdp && 
 
 # http://sigkillit.com/2013/02/26/how-to-remotely-access-linux-from-windows/
 COPY etc/ /etc/
+COPY createusers.txt /root/createusers.txt
 
 # Allow all users to connect via RDP.
 RUN sed -i '/TerminalServerUsers/d' /etc/xrdp/sesman.ini && \

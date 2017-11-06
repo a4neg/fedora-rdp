@@ -1,63 +1,13 @@
-XFCE in a Docker container
-==========================
-
-What
-----
-
-Simple proof of concept to run a Linux desktop in a container.
-
-
-Why
----
-
-I want to run a graphical Linux app, such as `scap-workbench`,
-and access it from devices that cannot run an X Server,
-such as a stock Chromebook or Windows laptop.
-
-I may extend https://github.com/jumanjiman/wormhole to provide
-a full desktop along the lines of xrdp.
-
-
-Run
----
-
-On a Linux host with Docker:
-
-    # Alpine desktop.
-    # This is really meant to be a base image for others.
-    docker run -d -p 3389:3389 jumanjiman/xrdp:alpine
-
-    # Fedora desktop.
-    # This is really meant to be a base image for others.
-    docker run -d -p 3389:3389 jumanjiman/xrdp
-
-    # Or desktop with SCAP workbench.
-    docker run -d -p 3389:3389 jumanjiman/xrdp:openscap
-
-Connect to the container as user `foo` with password `bar`
-via an RDP client.
-
-On a Windows host with Docker:
-
-    # Alpine desktop.
-    # This is really meant to be a base image for others.
-    docker run -d -p 4000:3389 jumanjiman/xrdp:alpine
-
-    # Fedora desktop.
-    # This is really meant to be a base image for others.
-    docker run -d -p 4000:3389 jumanjiman/xrdp
-
-    # Or desktop with SCAP workbench.
-    docker run -d -p 4000:3389 jumanjiman/xrdp:openscap
-
-Connect to the container as user `foo` with password `bar`
-via an RDP client to localhost:4000
-(Note that you may be able to just follow the Linux instructions, but at least some versions of Windows have Remote Assitance / Remote Desktop already listening on port 3389)
-
-
-Build
------
-
-On a Linux host with Docker and Docker Compose:
-
-    ci/build
+## Fedora LXDE 1Cv8.3 XRDP server ##
+# Build command $ ci/build
+Установленные пакеты:
+Firefox
+WPS Office 10.1.0
+1C8.3.10-2650
+## Пользователи создаются в файле /root/createusers.txt вида mickey:mouse:Y где имя:пароль:входит ли в sudo, понимается только Y
+# Пример запуска 
+docker run -d --name fedora-rdp \
+           -p 3389:3389 \
+           -v /home/docker/rdp/home/:/home \
+           -dit --restart unless-stopped \
+           a4neg/fedora-rdp:latest
